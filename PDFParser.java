@@ -32,17 +32,25 @@ public class PDFParser {
             PDFTextStripper stripper = new PDFTextStripper();
             System.out.println("PDF Loaded");
             sb.append(stripper.getText(pdDoc));
+            pdDoc.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public char[] nextLine() {
+        char[] Line = null;
         int i_end = sb.indexOf("\n", offset);
-        char[] Line = new char[i_end - offset];
-        sb.getChars(offset, i_end, Line, 0);
-        offset = i_end + 1;
-        return Line;
+        
+        if (i_end == -1)
+            Line = new char[]{'0','\n'};
+        else {
+            Line = new char[i_end - offset];
+            sb.getChars(offset, i_end, Line, 0);
+            offset = i_end + 1;
+           
+        }
+          return Line;
     }
 
     public boolean done() {

@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class ImportWEMUHistory {
 
     public static void main(String[] args) {
-        File file = new File("/home/elkip/NetBeansProjects/ImportWEMUHistory/mozilla.pdf");
+        File file = new File("/home/elkip/Documents/wemu_import.pdf");
         //System.out.println(FormatDate("3:43pm 01/31/2019"));
         Formatpdf(file);
     } 
@@ -90,8 +90,10 @@ public class ImportWEMUHistory {
 
                     while (date.equals(oldDate)) {
                         //read in next line, next time stamp
+                        
                         output = new String(parse.nextLine());
-                        date = output.substring(0, 18);
+                        if (output.length()>=18)
+                            date = output.substring(0, 18);
                     }
                 }
             }
