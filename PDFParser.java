@@ -42,8 +42,11 @@ public class PDFParser {
         char[] Line = null;
         int i_end = sb.indexOf("\n", offset);
         
-        if (i_end == -1)
+        if (i_end == -1) {
             Line = new char[]{'0','\n'};
+            offset = sb.length() + 1;
+        }
+            
         else {
             Line = new char[i_end - offset];
             sb.getChars(offset, i_end, Line, 0);

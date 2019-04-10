@@ -42,7 +42,6 @@ public class ImportWEMUHistory {
         while(parse.done()){
             //read in line will be formatted or discarded
             String output = new String(parse.nextLine()); 
-
             //filter the string accordingly
             if (output.startsWith("ARTIST:")) {
                 output = output.substring(8);
@@ -90,7 +89,8 @@ public class ImportWEMUHistory {
 
                     while (date.equals(oldDate)) {
                         //read in next line, next time stamp
-                        
+                        if (parse.done())
+                            break;
                         output = new String(parse.nextLine());
                         if (output.length()>=18)
                             date = output.substring(0, 18);
@@ -101,10 +101,12 @@ public class ImportWEMUHistory {
             if (!insert.isEmpty() && insert.peekFirst().isFull()) {
                 while (!insert.isEmpty()) {
                     record r = insert.pop();
+                    r.addQuotes();
                     System.out.println("INSERT INTO Play_Log(Play_Timestamp, Album_ID, Track_Name, Host, Set_Artist, Set_Label) VALUES\n"
-                            + "	('" + r.timestamp + "', SELECT Album_ID FROM Album WHERE Title = '" + r.album + "', '" + r.track + "', '" + r.host + "', '" + r.artist + "', '" + r.label + "');");
+                            + "	(" + r.timestamp + ", SELECT Album_ID FROM Album WHERE Title = " + r.album + ", " + r.track + ", " + r.host + ", " + r.artist + ", " + r.label + ");");
                 }
             }
-        } 
+        }
+        System.out.println("Done");
     }
 }
